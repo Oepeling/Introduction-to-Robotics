@@ -34,9 +34,7 @@ void setup() {
 }
 
 void loop() {
-  RGBType value = mapValue(potRead(), 0, 1023, 0, 255);
-  setColor(value);
-  value.print();
+  setColor(mapValue(potRead(), 0, 1023, 0, 255));
   delay(10);
 }
 
