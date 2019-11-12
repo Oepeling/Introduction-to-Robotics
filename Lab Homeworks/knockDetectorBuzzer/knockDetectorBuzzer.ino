@@ -62,9 +62,6 @@ enum playingState { PAUSE, PLAYING };
 playingState currentState = PAUSE;
 unsigned long lastUpdateTime = 0;
 unsigned long noteDuration = 0;
-unsigned long delayValue = 0;
-int numCycles = 0;
-int currentCycle = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -116,47 +113,27 @@ void startPlayingSong() {
   currentNote = 0;
   currentState = PLAYING;
   noteDuration = 1200 / tempo[currentNote];
-  delayValue = 1000000 / melody[currentNote] / 2;
-  numCycles = melody[currentNote] * noteDuration / 1000;
-  currentCycle = 0;
 
-  digitalWrite(activeBuzzerPin, HIGH);
+  tone(activeBuzzerPin, melody[currentNote]);
   lastUpdateTime = millis();
 }
 
 void continuePlayingSong() {
-  if (millis() - lastUpdateTime < delayValue) {
+  if (millis() - lastUpdateTime < noteDuration) {
     return;
   } else if (currentState == PLAYING) {
     currentState = PAUSE;
+    noteDuration = noteDuration * 1.3;
     
-    digitalWrite(activeBuzzerPin, LOW);
+    noTone(activeBuzzerPin);
     lastUpdateTime = millis();
   } else {
-    currentCycle++;
-    
-    if (currentCycle == numCycles) {
-      delayValue = noteDuration * 1.3;
-      currentState = PAUSE;
+    currentNote = (currentNote + 1) % getSize(melody);
+    currentState = PLAYING;
+    noteDuration = 1200 / tempo[currentNote];
 
-      digitalWrite(activeBuzzerPin, LOW);
-      lastUpdateTime = millis();
-    } else if (currentCycle > numCycles) {
-      currentNote = (currentNote + 1) % getSize(melody);
-      currentState = PLAYING;
-      noteDuration = 1200 / tempo[currentNote];
-      delayValue = 1000000 / melody[currentNote] / 2;
-      numCycles = melody[currentNote] * noteDuration / 1000;
-      currentCycle = 0;
-
-      digitalWrite(activeBuzzerPin, HIGH);
-      lastUpdateTime = millis();
-    } else {
-      currentState = PLAYING;
-
-      digitalWrite(activeBuzzerPin, HIGH);
-      lastUpdateTime = millis();
-    }
+    tone(activeBuzzerPin, melody[currentNote]);
+    lastUpdateTime = millis();
   }
 }
 
@@ -167,10 +144,7 @@ void stopPlayingSong() {
   currentNote = 0;
   currentState = PAUSE;
   noteDuration = 0;
-  delayValue = 0;
-  numCycles = 0;
-  currentCycle = 0;
 
-  digitalWrite(activeBuzzerPin, LOW);
+  noTone(activeBuzzerPin);
   lastUpdateTime = 0;
 }
