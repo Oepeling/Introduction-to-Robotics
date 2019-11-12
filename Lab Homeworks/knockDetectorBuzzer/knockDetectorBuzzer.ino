@@ -79,7 +79,7 @@ void loop() {
     knockTime = millis();
   } else if (knockDetected && !buttonPushed && millis() - knockTime > delayTime && !songPlaying) {
     startPlayingSong();
-  } else if (knockDetected && digitalRead(pushbuttonPin) == HIGH && songPlaying) {
+  } else if (knockDetected && readPushbutton() == HIGH && songPlaying) {
     buttonPushed = true;
   } else if (knockDetected && buttonPushed && songPlaying) {
     stopPlayingSong();
@@ -90,6 +90,10 @@ void loop() {
   }
 
   delay(1);
+}
+
+bool readPushbutton() {
+  return !digitalRead(pushbuttonPin);
 }
 
 bool knockDetection() {
