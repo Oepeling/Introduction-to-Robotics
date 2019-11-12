@@ -1,3 +1,5 @@
+/**********************Type Declarations**************************/
+
 class RGBType {
  private:
   int red_;
@@ -24,8 +26,31 @@ class RGBType {
   }
 };
 
+/****************** Const Variables Declarations ******************/
+
 const RGBType ledPin(11, 10, 9);
 const RGBType potPin(A0, A1, A2);
+
+/******************** Variables Declarations ********************/
+
+/****************** Function Declarations **********************/
+
+/*************************** Setup *****************************/
+
+void setup() {
+  setMode(ledPin, OUTPUT);
+  setMode(potPin, INPUT);
+  Serial.begin(9600);
+}
+
+/*************************** Loop *****************************/
+
+void loop() {
+  seLedtColor(ledPin, mapValue(potRead(potPin), 0, 1023, 0, 255));
+  delay(10);
+}
+
+/****************** Function Definitions **********************/
 
 const RGBType potRead(const RGBType& potPin) {
   return RGBType(
@@ -53,15 +78,4 @@ void setLedColor(const RGBType& ledPin, const RGBType& value) {
   analogWrite(ledPin.red(), value.red());
   analogWrite(ledPin.green(), value.green());
   analogWrite(ledPin.blue(), value.blue());
-}
-
-void setup() {
-  setMode(ledPin, OUTPUT);
-  setMode(potPin, INPUT);
-  Serial.begin(9600);
-}
-
-void loop() {
-  seLedtColor(ledPin, mapValue(potRead(potPin), 0, 1023, 0, 255));
-  delay(10);
 }

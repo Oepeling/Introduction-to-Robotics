@@ -1,5 +1,7 @@
 #include "pitches.h"
 
+/****************** Const Variables Declarations ******************/
+
 const int melody[] = {
   NA4, NC5, NE5, NA5, NB5, NE5, NC5, NB5, 
   NC6, NE5, NC5, NC6, NFS5, ND5, NA4, NFS5, 
@@ -47,7 +49,11 @@ const int tempo[] = {
 const int activeBuzzerPin = 11;
 const int pasiveBuzzerPin = A0;
 const int pushbuttonPin = 8;
+
 const unsigned long delayTime = 5000;
+const int threshold = 150;
+
+/******************** Variables Declarations ********************/
 
 bool knockDetected = false;
 bool buttonPushed = false;
@@ -55,13 +61,23 @@ bool songPlaying = false;
 unsigned long knockTime = 0;
 
 int knockValue = 0;
-const int threshold = 150;
 
 int currentNote = 0;
 enum playingState { PAUSE, PLAYING };
 playingState currentState = PAUSE;
 unsigned long lastUpdateTime = 0;
 unsigned long noteDuration = 0;
+
+/****************** Function Declarations **********************/
+
+bool readPushbutton();
+bool knockDetection();
+int getSize(const int* vector);
+void startPlayingSong();
+void continuePlayingSong();
+void stopPlayingSong();
+
+/*************************** Setup *****************************/
 
 void setup() {
   // put your setup code here, to run once:
@@ -70,6 +86,8 @@ void setup() {
   pinMode(pushbuttonPin, INPUT_PULLUP);
   Serial.begin(9600);
 }
+
+/*************************** Loop *****************************/
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -91,6 +109,8 @@ void loop() {
 
   delay(1);
 }
+
+/****************** Function Definitions **********************/
 
 bool readPushbutton() {
   return !digitalRead(pushbuttonPin);
