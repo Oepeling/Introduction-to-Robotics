@@ -44,9 +44,9 @@ const int tempo[] = {
 8, 8, 8, 8, 2, 4, 4,
 };
 
-const int activeBuzzerPin = 5;
+const int activeBuzzerPin = 11;
 const int pasiveBuzzerPin = A0;
-const int pushbuttonPin = 4;
+const int pushbuttonPin = 8;
 const unsigned long delayTime = 5000;
 
 bool knockDetected = false;
@@ -55,7 +55,7 @@ bool songPlaying = false;
 unsigned long knockTime = 0;
 
 int knockValue = 0;
-const int threshold = 70;
+const int threshold = 150;
 
 int currentNote = 0;
 enum playingState { PAUSE, PLAYING };
@@ -67,7 +67,7 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(activeBuzzerPin, OUTPUT);
   pinMode(pasiveBuzzerPin, INPUT);
-  pinMode(pushbuttonPin, INPUT);
+  pinMode(pushbuttonPin, INPUT_PULLUP);
   Serial.begin(9600);
 }
 
