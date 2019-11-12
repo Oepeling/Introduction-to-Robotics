@@ -110,7 +110,7 @@ int getSize(const int* vector) {
 }
 
 void startPlayingSong() {
-  Serial.println("Starway to Heaven");
+  Serial.println("Stairway to Heaven");
   songPlaying = true;
   
   currentNote = 0;
