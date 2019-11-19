@@ -9,3 +9,8 @@ Lab 3:
 file: knockDetectorBuzzer
 description:
 	- Knock Detector that plays "Stairway to Heaven" until answered by pushing a button.
+
+Lab 4:
+file: 4DigitSegmentDisplayJoystick
+description:
+	- Controling a 4-digit 7-segments display with a joystick.
