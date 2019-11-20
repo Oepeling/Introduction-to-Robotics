@@ -49,7 +49,7 @@ void loop() {
     display.update(joystick.readAxis());
   }
   display.print();
-  delay(5);
+  delay(1);
 }
 
 /****************** Function Definitions **********************/

@@ -60,21 +60,21 @@ public:
           displayEncoding[digits_[i]][j]);
       }
 
-//      if (pointer_ == i) {
-//        if (digitChange_ == false) {
-          digitalWrite(4, HIGH);
-//        } else {
-//          int currentTime = millis();
-//          if (currentTime - lastUpdateDP_ > blinkDelay_) {
-//            lastDPState_ = !lastDPState_;
-//            digitalWrite(DPPin_, lastDPState_);
-//            lastUpdateDP_ = currentTime;
-//          }
-//        }
-//      }
+      if (pointer_ == i) {
+        if (digitChange_ == false) {
+          digitalWrite(DPPin_, HIGH);
+        } else {
+          int currentTime = millis();
+          if (currentTime - lastUpdateDP_ > blinkDelay_) {
+            lastDPState_ = !lastDPState_;
+            digitalWrite(DPPin_, lastDPState_);
+            lastUpdateDP_ = currentTime;
+          }
+        }
+      }
       
-      digitalWrite(digitPins_[i], LOW);
-      delay(5);
+      digitalWrite(digitPins_[i], LOW); 
+      delay(1);
       digitalWrite(digitPins_[i], HIGH);
     }
   }
