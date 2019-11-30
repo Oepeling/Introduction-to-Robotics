@@ -69,7 +69,7 @@ class joystickReader {
   }
 
   void pinInit() {
-    pinMode(pushbuttonPin_, INPUT);
+    pinMode(pushbuttonPin_, INPUT_PULLUP);
     pinMode(xPin_, INPUT);
     pinMode(yPin_, INPUT);
   }
