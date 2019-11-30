@@ -14,3 +14,10 @@ Lab 4:
 file: 4DigitSegmentDisplayJoystick
 description:
 	- Controling a 4-digit 7-segments display with a joystick.
+
+Lab 5:
+file: gameMenu
+description:
+	- Game menu controlled by joystick.
+video link:
+	https://github.com/Oepeling/Introduction-to-Robotics/blob/master/Lab%20Homeworks/Game%20Menu%20-%20video.MOV
