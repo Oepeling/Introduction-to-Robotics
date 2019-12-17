@@ -2,7 +2,7 @@
 
 #include <LiquidCrystal.h>
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+LiquidCrystal lcd(8, 9, 5, 4, 3, 2);
 
 int initialLevel = 0;
 const int maxLevel = 100;

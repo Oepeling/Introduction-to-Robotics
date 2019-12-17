@@ -7,7 +7,7 @@
 
 /******************** Variables Declarations ********************/
 
-joystickReader joystick(7, A0, A1);
+joystickReader joystick(7, A1, A0);
 
 /****************** Function Declarations **********************/
 

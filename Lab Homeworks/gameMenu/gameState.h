@@ -138,6 +138,7 @@ void mainMenu::handleAction(action a) {
       settingsInstance.init();
     } else {
       model = &standbyInstance;
+      mainMenuInstance.cursor = StartGame;
       standbyInstance.init();
     }
   } else if (a.x != 0) {
