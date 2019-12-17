@@ -19,7 +19,7 @@ struct standby : baseModel {
 };
 
 struct mainMenu : baseModel {
-  enum type {StartGame, HighScore, Settings, Exit, size};
+  enum type {StartGame, HighScore, Settings, Info, Exit, size};
   type cursor = StartGame;
 
   void handleAction(action a);
@@ -114,6 +114,15 @@ struct changeDifficulty : baseModel {
   void init();
 };
 
+struct infoMenu : baseModel {
+  enum type {GameName, MyName, GithubLink, UnibucRobotics, Exit, size};
+  type cursor = GameName;
+
+  void handleAction(action a);
+  void redraw(bool redrawDisplay);
+  void init();
+};
+
 baseModel* model;
 standby standbyInstance;
 mainMenu mainMenuInstance;
@@ -123,6 +132,7 @@ highScoreMenu highScoreInstance;
 settingsMenu settingsInstance;
 changeName changeNameInstance;
 changeDifficulty changeDifficultyInstance;
+infoMenu infoMenuInstance;
 
 void standby::handleAction(action a) {
   if (a.button == HIGH) {
@@ -165,6 +175,9 @@ void mainMenu::handleAction(action a) {
     } else if (cursor == Settings) {
       model = &settingsInstance;
       model->init();
+    } else if (cursor == Info) {
+      model = &infoMenuInstance;
+      model->init();
     } else {
       cursor = StartGame;
       model = &standbyInstance;
@@ -193,6 +206,8 @@ void mainMenu::redraw(bool redrawDisplay) {
     lcd.print("High Score");
   } else if (cursor == Settings) {
     lcd.print("Settings");
+  } else if (cursor == Info) {
+    lcd.print("Info");
   } else {
     lcd.print("Exit");
   }
@@ -621,4 +636,47 @@ void changeDifficulty::redraw(bool redrawDisplay) {
 void changeDifficulty::init() {
   cursor = (type)0;
   current = initialDifficulty;
+}
+
+void infoMenu::handleAction(action a) {
+  if (a.button == HIGH) {
+    if (cursor == Exit) {
+      model = &mainMenuInstance;
+    }
+  } else {
+    cursor = (type)(((int) cursor + a.x + (int)size) % (int)size);
+  }
+}
+
+void infoMenu::redraw(bool redrawDisplay) {
+  if (!redrawDisplay) { return; }
+
+  matrix.clear();
+  lcd.clear();
+
+  lcd.setCursor(0, 0);
+  
+  if (cursor == GameName) {
+    lcd.print("Game:");
+    lcd.setCursor(2, 1);
+    lcd.print("Perilious Path");
+  } else if (cursor == MyName) {
+    lcd.print("Created by:");
+    lcd.setCursor(3, 1);
+    lcd.print("Livia");
+  } else if (cursor == GithubLink) {
+    lcd.print("github.com/");
+    lcd.setCursor(8, 1);
+    lcd.print("Oepeling");
+  } else if (cursor == UnibucRobotics) {
+    lcd.print("At:");
+    lcd.setCursor(1, 1);
+    lcd.print("@UnibucRobotics");
+  } else if (cursor == Exit) {
+    lcd.print("> Back");
+  }
+}
+
+void infoMenu::init() {
+  cursor = (type)0;
 }
