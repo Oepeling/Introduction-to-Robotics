@@ -7,6 +7,10 @@ Although this game probably doesn't sound familiar to all of you, you will find 
 
 It transforms the well-known maze game into a short-term memory game, making it more challenging and exciting.
 
+## Demo video
+
+https://drive.google.com/file/d/13Wp0T1PxEz2l59WMqxqNn7WIKvp2JqQh/view?usp=sharing
+
 
 ## Game play
 The point of the game is to connect two given dots without hitting a bomb.
@@ -40,6 +44,7 @@ The score you achieve will be determined by the length of the path (shorter is b
 * LCD Display
 * 8x8 LED Matrix
 * Joystick
-* Game On / Off Switch
 * Power On / Off Switch
 * Potentiometer for setting LCD contrast
+
+![Image description](https://github.com/Oepeling/Introduction-to-Robotics/blob/master/Matrix%20Game/hardware.jpg)
