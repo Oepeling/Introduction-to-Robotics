@@ -37,7 +37,7 @@ struct playMode : baseModel {
   const int diffChange = 5;
   int lastTime = 0;
   int countDown = 0;
-  bool highScore = false;
+  bool highScore;
 
   bool levelPassed;
   int lives;
@@ -189,10 +189,9 @@ void mainMenu::handleAction(action a) {
 }
 
 void mainMenu::redraw(bool redrawDisplay) {
-  if (!redrawDisplay) {
-    matrix.clear();
-    return;
-  }
+  matrix.clear();
+  
+  if (!redrawDisplay) { return; }
   
   lcd.clear();
   
@@ -240,7 +239,6 @@ void playMode::handleAction(action a) {
   } else if (cursor == Stop) {
     int current = millis();
     if (current - lastTime > messageDelay) {
-      highScore = false;
       model = &mainMenuInstance;
       model->init();
       model->redraw(true);
@@ -268,41 +266,40 @@ void playMode::handleAction(action a) {
       winLevel();
     } else if (matrix.board[currPos.first][currPos.second] == B) {
       loseLevel();
+    } else {
+      matrix.board[prev.first][prev.second] = P;
+  
+      if (matrix.path.size() > 1 && matrix.path[matrix.path.size() - 2] == currPos) {
+        matrix.board[matrix.path.back().first][matrix.path.back().second] = F;
+        matrix.path.pop_back();
+      } else if (matrix.board[currPos.first][currPos.second] == P && currPos != prev) {
+        currPos = prev;
+      } else if (matrix.path.empty() || matrix.path.back() != currPos) {
+        matrix.path.push_back(currPos);
+      } 
+  
+      matrix.board[currPos.first][currPos.second] = C;
     }
-
-    matrix.board[prev.first][prev.second] = P;
-
-    if (matrix.path.size() > 1 && matrix.path[matrix.path.size() - 2] == currPos) {
-      matrix.board[matrix.path.back().first][matrix.path.back().second] = F;
-      matrix.path.pop_back();
-    } else if (matrix.board[currPos.first][currPos.second] == P && currPos != prev) {
-      currPos = prev;
-    } else if (matrix.path.empty() || matrix.path.back() != currPos) {
-      matrix.path.push_back(currPos);
-    } 
-
-    matrix.board[currPos.first][currPos.second] = C;
   }
 }
 
 void playMode::redraw(bool redrawDisplay) {
-  if (!redrawDisplay) {
-    if (cursor == StartGame || cursor == NextLevel) {
-      matrix.digit(countDown);
-    } else if (cursor == StartLevel) {
-      matrix.bombs();
-    } else if (cursor == Stop) {
-      matrix.clear();
-    } else if (cursor == Play) {
-      matrix.drawPath();
-    }
-    return;
+  if (cursor == StartGame || cursor == NextLevel) {
+    matrix.digit(countDown);
+  } else if (cursor == StartLevel) {
+    matrix.bombs();
+  } else if (cursor == Stop) {
+    matrix.clear();
+  } else if (cursor == Play) {
+    matrix.drawPath();
   }
+
+  if (!redrawDisplay) { return; }
   
   lcd.clear();
 
   if (cursor == Stop) {
-    if (highScore) {
+    if (highScore == true) {
       lcd.setCursor(0, 0);
       lcd.print("Whooo!");
       lcd.setCursor(0, 1);
@@ -350,7 +347,7 @@ void playMode::startGame() {
 
 void playMode::stopGame() {
   cursor = Stop;
-  bool highScore = highScoreInstance.recordScore();
+  highScore = highScoreInstance.recordScore();
   init();
   lastTime = millis();
 }
@@ -403,8 +400,8 @@ void playMenu::handleAction(action a) {
     if (cursor == Resume) {
       model = &playModeInstance;
     } else {
+      model = &playModeInstance;
       playModeInstance.stopGame();
-      model = &mainMenuInstance;
     }
   } else if (a.x != 0) {
     cursor = (type)(((int) cursor + a.x + (int)size) % (int)size);
